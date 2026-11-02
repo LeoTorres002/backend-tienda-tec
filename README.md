@@ -7,6 +7,8 @@ Asegúrate de tener instalado en tu equipo:
 - [Node.js](https://nodejs.org/) (Versión 18 o superior recomendada)
 - [MySQL](https://www.mysql.com/) o un entorno como XAMPP / Laragon.
 - [Postman](https://www.postman.com/) (Opcional, para probar los endpoints).
+- [XAMPP](https://www-apachefriends-org.translate.goog/download.html?_x_tr_sl=en&_x_tr_tl=es&_x_tr_hl=es&_x_tr_pto=tc)
+
 
 ---
 
@@ -14,14 +16,14 @@ Asegúrate de tener instalado en tu equipo:
 
 1. **Clona el repositorio:**
    ```bash
-   git clone [https://github.com/LeoTorres002/backend-tienda-tec](https://github.com/tu-usuario/tu-repositorio-backend.git)
-   cd tu-repositorio-backend
+git clone https://github.com/LeoTorres002/backend-tienda-tec.git
+cd Backend-tienda-tec
 
 ##  Instalar dependencias
 npm install
 
  ## Configurar la Base de Datos
-Abre tu gestor de base de datos MySQL favorito (MySQL Workbench, phpMyAdmin, DBeaver, etc.).
+Abre tu gestor de base de datos MySQL de preferencia (MySQL Workbench, phpMyAdmin, DBeaver, etc.).
 
 Ejecuta el script SQL que se encuentra en la ruta:
 database/schema.sql
