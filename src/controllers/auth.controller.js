@@ -29,20 +29,16 @@ const login = async (req, res, next) => {
         }
 
         const user = rows[0];
-
         let isPasswordValid = false;
 
-        // Verificar si la contraseña almacenada es un hash de bcrypt o texto plano
         if (!user.password.startsWith('$2b$')) {
             isPasswordValid = (password === user.password);
             
-            // Si coincide en texto plano, la encriptamos y la guardamos encriptada de una vez
             if (isPasswordValid) {
                 const hashedPassword = await bcrypt.hash(password, 10);
                 await db.execute('UPDATE users SET password = ? WHERE id = ?', [hashedPassword, user.id]);
             }
         } else {
-            // Si ya es un hash seguro, usamos bcrypt.compare normalmente
             isPasswordValid = await bcrypt.compare(password, user.password);
         }
 
@@ -77,9 +73,12 @@ const login = async (req, res, next) => {
 
 const register = async (req, res, next) => {
     try {
-        const { username, email, password, role_id } = req.body;
+        console.log('Datos recibidos en registro:', req.body);
 
-        // 1. Validar campos obligatorios
+        // Aceptamos tanto 'username' como 'name' por si el frontend envía uno u otro
+        const username = req.body.username || req.body.name;
+        const { email, password, role_id } = req.body;
+
         if (!username || !email || !password) {
             const error = new Error('Todos los campos (username, email, password) son obligatorios.');
             error.statusCode = 400;
@@ -87,23 +86,20 @@ const register = async (req, res, next) => {
             throw error;
         }
 
-        // 2. Verificar si el correo ya está registrado
         const [existingUser] = await db.execute('SELECT id FROM users WHERE email = ?', [email]);
         if (existingUser.length > 0) {
             const error = new Error('El correo electrónico ya se encuentra registrado.');
-            error.statusCode = 409; // Conflict
+            error.statusCode = 409;
             error.code = 'EMAIL_ALREADY_EXISTS';
             throw error;
         }
 
-        // 3. Definir el rol (si no se envía role_id, por defecto asignamos el rol 2 que es 'user')
-        const assignedRoleId = role_id || 2;
+        const assignedRoleId = role_id ? Number(role_id) : 2;
 
-        // 4. Hashear la contraseña con Bcrypt por seguridad
         const saltRounds = 10;
         const hashedPassword = await bcrypt.hash(password, saltRounds);
 
-        // 5. Insertar el nuevo usuario en la base de datos
+        // Usamos 'username' que es la columna real que tiene tu tabla en MySQL
         const insertQuery = `
             INSERT INTO users (username, email, password, role_id) 
             VALUES (?, ?, ?, ?)
@@ -121,6 +117,7 @@ const register = async (req, res, next) => {
             }
         });
     } catch (err) {
+        console.error('ERROR DETALLADO EN REGISTER:', err);
         next(err);
     }
 };
@@ -128,4 +125,4 @@ const register = async (req, res, next) => {
 module.exports = {
     login,
     register
-};
+};  

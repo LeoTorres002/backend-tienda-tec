@@ -14,7 +14,7 @@ Asegúrate de tener instalado en tu equipo:
 
 1. **Clona el repositorio:**
    ```bash
-   git clone [https://github.com/tu-usuario/tu-repositorio-backend.git](https://github.com/tu-usuario/tu-repositorio-backend.git) CAMBIAR LA URL A MI REPOSITORIO QUE NO SE ME OLVIDE
+   git clone [https://github.com/LeoTorres002/backend-tienda-tec](https://github.com/tu-usuario/tu-repositorio-backend.git)
    cd tu-repositorio-backend
 
 ##  Instalar dependencias
